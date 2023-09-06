@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.tiny.cloud/1/mn6pvsv3dgswz0dlrbw7kgh1xv64hwr3wymvs999bkd7xkh1/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/daisyui/3.6.3/full.css" integrity="sha512-W8QxNG2wqy6qWwhNQ8/HjsrIq9rPxZrgj9Ohn8wKnTrVN6ZnPtTsMa9grrlBiGDovdy+QIBIKHGqjLg++tzJ1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="skins\content\CUSTOM\content.min.css">
+  <link rel="stylesheet" href="skins\ui\CUSTOM\content.min.css">
+  <link rel="stylesheet" href="skins\ui\CUSTOM\skin.min.css">
+  <title>beanfrog drive</title>
+</head>
+
+<body>
+    <div class="flex h-screen">
+
+        <div class="bg-gray-100 w-64 px-8 py-4">
+          <ul>
+            <li class="py-2 flex items-center text-gray-600 hover:text-gray-900 cursor-pointer">
+              <svg class="w-6 h-6 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+              My Drive
+            </li>
+            <a target="_blank" href="docs.html">
+            <li class="py-2 flex items-center text-gray-600 hover:text-gray-900 cursor-pointer">
+              <svg class="w-6 h-6 mr-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+              New Document
+            </li>
+            </a>
+          </ul>
+        </div>
+      
+        <div class="flex-1 p-8">
+<div class="flex-1 p-8">
+    <div class="grid grid-cols-2 gap-4" id="docCardsContainer">
+
+    </div>
+  
+  </div>
+        </div>
+        
+      </div>
+</body>
+<script>
+function fetchDocInfo() {
+  fetch('http://localhost:3000/getDocs')
+    .then(response => response.json())   
+    .then(docInfo => {
+      console.log(docInfo);
+      const docCardsContainer = document.getElementById('docCardsContainer');
+      if (docInfo.length === 0) {
+        const noDocs = `
+        <div class="hero min-h-screen">
+  <div class="hero-content text-center">
+    <div class="max-w-md">
+      <h1 class="text-5xl font-bold text-gray-100">No Documents Found</h1>
+      <p class="py-6 text-xl text-gray-200">Try creating one?</p>
+      <p class="py-6 text-l text-gray-200">Expecting documents? Ensure the localhost server is running by entering <code class="bg-gray-800 text-gray-200">npm run start</code> into the terminal.</p>
+      <a href="docs.html" target="_blank"
+         class="btn btn-primary bg-blue-500 hover:bg-blue-600 transition duration-300 ease-in-out">
+          Create New Document
+      </a>
+    </div>
+  </div>
+</div>
+
+        `;
+        docCardsContainer.innerHTML = noDocs;
+        return; 
+      }
+      for (const info of docInfo) {
+        const lastModified = new Date(info.lastModified);
+
+        let filenameWithoutExtension = info.filename.replace(/\.[^/.]+$/, '');
+
+        let lastModifiedText = '';
+        const today = new Date();
+        if (lastModified.toDateString() === today.toDateString()) {
+          lastModifiedText = `Updated ${lastModified.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+        } else {
+          lastModifiedText = `Updated ${lastModified.toLocaleDateString()} ${lastModified.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+        }
+        const card = `
+          <a target="_blank" href="docs.html?load=${filenameWithoutExtension}"class="bg-white rounded p-4 shadow">
+            <div class="flex items-center">
+              <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+              <span class="ml-2 font-medium text-gray-900">${filenameWithoutExtension}</span>
+            </div>
+            <div class="text-sm text-gray-500 mt-1">${lastModifiedText}</div>
+          </a>
+        `;
+        docCardsContainer.insertAdjacentHTML('beforeend', card);
+      }
+})
+    .catch(error => {
+      console.error('Error fetching document info:', error);
+    });
+    
+}
+
+fetchDocInfo();
+
+  </script>
+</html>

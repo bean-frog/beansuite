@@ -1,0 +1,17 @@
+.tox-notifications-container, .tox-statusbar__branding {
+    display: none !important;
+  }
+  body {
+    background-color: #242526;
+  }
+#mce_0_ifr {
+    width: 65%;
+    margin-top: 75px;
+     padding: 75px;
+     background-color: #e9e9ea
+}
+
+.tox-edit-area {
+    display: flex;
+    justify-content: center;
+}
