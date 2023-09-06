@@ -9,7 +9,7 @@
 
 ## Installation and Use
 - clone the repository or download the code as .zip and unpack
--open docs.html in a text editor and replace YOURAPIKEY in the script tag (shown in screenshot:)
+- open docs.html in a text editor and replace YOURAPIKEY in the script tag (shown in screenshot:)
 ![screenshot](readmeassets/1.png)
 - ensure `npm` and `nodejs` are installed on your system
 - open a terminal and `cd` to the projects root directory
