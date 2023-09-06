@@ -6,6 +6,7 @@
 - DO NOT, under any circumstances, delete `coconut.jpg`. The project will not run without it.
 - This is currently a proof-of-concept project.
 - You must supply YOUR OWN TinyMCE api key.
+- go to `https://www.tiny.cloud/` and sign up for the free tier to get your key. you do not need the paid tier for this.
 
 ## Installation and Use
 - clone the repository or download the code as .zip and unpack
